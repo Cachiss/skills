@@ -1,0 +1,50 @@
+# Dependencias: se instalan dentro del build
+/vendor
+/node_modules
+
+# Assets compilados: los genera la etapa `assets`
+/public/build
+/public/hot
+/public/storage
+
+# Secretos y entornos locales
+.env
+.env.*
+!.env.example
+
+# Cachés de Laravel que no deben viajar en la imagen
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/logs/*
+/storage/app/public/*
+/storage/app/private/*
+/storage/pail
+/storage/*.key
+/bootstrap/cache/*.php
+
+# Herramientas y metadatos
+.git
+.gitignore
+.gitattributes
+.github
+.editorconfig
+.claude
+.vscode
+.idea
+.expo
+.phpunit.cache
+.phpunit.result.cache
+/tests
+/docs
+phpunit.xml
+README.md
+deploy.sh
+.DS_Store
+**/.DS_Store
+
+# Los propios artefactos de Docker
+Dockerfile
+docker-compose.yml
+.dockerignore

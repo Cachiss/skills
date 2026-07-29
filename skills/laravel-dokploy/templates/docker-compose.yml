@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Laravel → Dokploy
+#
+# Un único servicio: la aplicación. Base de datos y almacenamiento externos.
+# Para añadir Postgres, MySQL, Redis o MinIO: references/compose-variants.md
+#
+# No se publica ningún puerto: Traefik enruta por la red `dokploy-network`.
+# En Dokploy apunta el dominio al servicio `app`, PUERTO 80.
+# ---------------------------------------------------------------------------
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    restart: unless-stopped
+
+    # Dokploy escribe aquí las variables que definas en la UI del proyecto.
+    env_file:
+      - path: .env
+        required: false
+
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+
+      # Procesos que viven dentro del contenedor
+      RUN_QUEUE_WORKER: ${RUN_QUEUE_WORKER:-true}
+      QUEUE_WORKERS: ${QUEUE_WORKERS:-1}
+      RUN_SCHEDULER: ${RUN_SCHEDULER:-true}
+
+      # Tareas de arranque. Activa RUN_MIGRATIONS sólo cuando quieras que el
+      # despliegue migre la base de datos.
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-false}
+      RUN_STORAGE_LINK: ${RUN_STORAGE_LINK:-false}
+
+    # Sólo visible dentro de la red de Docker; Traefik llega por aquí.
+    expose:
+      - "80"
+
+    networks:
+      - dokploy-network
+
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/up')===false?1:0);"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  dokploy-network:
+    external: true
