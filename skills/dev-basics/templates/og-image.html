@@ -1,0 +1,36 @@
+<!doctype html>
+<!--
+  og-image con logo + nombre + tagline (opcional; el script ya genera una con sólo el logo).
+  Edita los textos/colores y captúrala a 1200x630 con Chrome headless:
+
+    CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"   # Linux: google-chrome
+    "$CHROME" --headless=new --hide-scrollbars --window-size=1200,630 \
+      --screenshot=public/og-image.png "file://$PWD/og-image.html"
+
+  El logo se referencia como ./logo.svg: copia el logo junto a este archivo antes de capturar.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    display: flex; align-items: center; justify-content: center; gap: 56px;
+    background: #0f172a;                       /* color de marca / fondo OPACO */
+    color: #f8fafc;
+    font-family: -apple-system, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  }
+  img { height: 300px; width: auto; }
+  .txt { max-width: 640px; }
+  h1 { font-size: 76px; line-height: 1.05; margin: 0 0 20px; font-weight: 800; letter-spacing: -0.02em; }
+  p  { font-size: 34px; line-height: 1.3; margin: 0; opacity: .85; }
+</style>
+</head>
+<body>
+  <img src="./logo.svg" alt="">
+  <div class="txt">
+    <h1>Nombre del proyecto</h1>
+    <p>Qué hace, en una frase corta.</p>
+  </div>
+</body>
+</html>
